@@ -1,10 +1,16 @@
 ========> Linux
 1. cat file_name (vi alternative to display files)
 2. touch file_name (create a new file)
+3. rm -rf file_name (delete file)
 
 ========> Git commnads
 https://learngitbranching.js.org/
 
+NOTE:
+- Windows users can use git bash, all the commands will work.
+- When using git for the first time, set the global configs using the commands:
+$ git config --global user.name "your_name"
+$ git config --global user.email your_email
 
 1. git init
 2. git status
@@ -26,4 +32,11 @@ Working with Existing Projects with github
 16. git clone URL (Fork)
 17. git remote add upstream URL (Upstream URL of the repo owner) (URL from where you forked the project) (you cannot merge directly to owner branch(upstream))
 18. git reset --hard upstream main (if your upstream has commits and you have old fork)
+19. git pull upstream main
+
+//Merge Conflict 
+1. Let's say you and your friend have changed line 3 and both are commiting the same file and push those files, when this PR (Pull request) is merged it will create conflict.
+2. you need to resolve this manually.
 	
+
+
