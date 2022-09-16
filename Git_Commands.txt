@@ -1,4 +1,10 @@
-Git commnads
+========> Linux
+1. cat file_name (vi alternative to display files)
+2. touch file_name (create a new file)
+
+========> Git commnads
+https://learngitbranching.js.org/
+
 
 1. git init
 2. git status
@@ -14,3 +20,10 @@ Git commnads
 13. git beanch branchName (create a new branch from the main)
 14. git checkout branchName (use your new branch)
 15. git merge branchName (merge current branch with branchName)
+16. git reset (undo local changes to the state of a Git repo)  
+
+Working with Existing Projects with github
+16. git clone URL (Fork)
+17. git remote add upstream URL (Upstream URL of the repo owner) (URL from where you forked the project) (you cannot merge directly to owner branch(upstream))
+18. git reset --hard upstream main (if your upstream has commits and you have old fork)
+	
