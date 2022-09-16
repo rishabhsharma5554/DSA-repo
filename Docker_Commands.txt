@@ -1,0 +1,199 @@
+1.To check docker version -> docker --version
+2.To pull a new app -> docker run in28min/todo-rest-api-h2:1.0.0.RELEASE
+	Using the above command image is being download from public/private docker hub(registry)
+	
+	docker hub -> registry
+	registry -> contains docker images
+	image -> contains multiple containers
+
+	Image - static version
+	Image running -> container (dynamic version)
+	One image can contain multiple container
+3.To run application on specific port -> docker run -p 5000:5000 in28min/todo-rest-api-h2:1.0.0.RELEASE
+ 	-p 5000:5000 -> Host port:Container Port
+	in this case you can stop the container using ctrl + c
+
+4. Close the window and re run this command if you want to use ctrl + c to terminate the container-> 
+	docker run -it --init -p 5000:5000 in28min/todo-rest-api-h2:1.0.0.RELEASE
+
+5. if you want to run container independently (dont want to tie to terminal) (added -d => detached mode )
+	This will run the container in the background
+	docker run -p 5000:5000 -d in28min/todo-rest-api-h2:1.0.0.RELEASE
+	
+	-> after running the above command, you will get a container id
+		something like this = c03919fd730a70c1a124018f8d477c3b877cd3821493cfc0db2bf47f80e3e6ff
+	-> you will not see any logs for this
+6. If you want to see the static logs 
+	-> docker logs (id of the container)
+	-> docker logs c03919fd730a70c1a124018f8d477c3b877cd3821493cfc0db2bf47f80e3e6ff
+	-> you can also use subset of id
+		docker logs c039
+7. If you want to see the tail logs
+	docker logs -f c039
+	-> want to exit -> press ctr + c
+
+8. Want to see all RUNNING containers 
+	docker container ls
+
+9. you can run multiple container from same image on different ports
+	->docker run -p 5001:5000 -d in28min/todo-rest-api-h2:1.0.0.RELEASE
+
+10. want to see all docker iamges available on our machine
+	-> docker iamges
+
+11. if you want to list all container irespective of their state,
+ 	-> docker container ls -a
+
+12. if you want to STOP the container
+	-> docker container stop (contaier id)
+	-> docker container stop 
+
+
+=========================images=========================
+13. to give multiple tag to single image
+	-> docker tag old_tag new_tag
+	-> docker tag in28min/todo-rest-api-h2:1.0.0.RELEASE in28min/todo-rest-api-h2:latest
+
+14. pull mysql image with default tag latest
+	-> pull command will only download the image from the registery
+	-> docker pull mysql (official image)
+
+15. docker search mysql -> to check offical image
+
+16. docker image history image_name -> instructions while creating the image
+
+17. docker image inspect image_name -? to see the all the information related to the image
+
+18. to remove the image - >  docker image remove mysql
+
+
+=========================container=========================
+
+19. docker container start command
+	-d = detached mode
+	-p = port
+	
+	-> docker container run -dp 5000:5000 in28min/todo-rest-api-h2:1.0.0.RELEASE
+
+20. pause the contaienr -> docker container pause fb3fcbd7b870
+
+21. unpause the container -> docker container unpause fb3fcbd7b870
+
+22. stop the container -> docker container stop fb3fcbd7b870
+
+23. remove stopeed container history from docker container ls -a
+	-> docker container prune
+
+24. live logs from the running container
+	docker container logs -f fb3fcbd7b870
+
+25. stopping the container greacefullly (it will take some time to close up all the connections, reference etc)
+	-> SIGTERM take 10 sec and gracefully stop contaienr
+	-> recmmended command
+	docker container stop fb3fcbd7b870
+
+26. forecefully kill the running container
+	-> SIGKILL
+	docker container kil f8214
+
+21. Restart policy 
+	*** Used for DBs, which you want to up when your system is turned on.
+	->by default = No
+
+	docker container run -dp 5000:5000 --restart=always in28min/todo-rest-api-h2:1.0.0.RELEASE
+	-> this will restart the container whenver the docker is up and running
+	-> to remove this policy use prune command
+	docker container prune
+
+==============
+
+22. docker events -> use to trace all ongoing events on demon
+
+23. docker top 996d -> give all the details of process which are running in that specific container
+
+24. docker stats -> give the stats of all the running continers (cpu, memory etc usages)
+
+25. if you want to add specific memory and cpu limits for your container
+	-m = memory
+	--cpu-quota 5000
+		for 5% = 5000
+		for 100% = 100000
+	-> docker container run -dp 5000:5000 -m 1.5G --cpu-quota 50000 in28min/todo-rest-api-h2:1.0.0.RELEASE
+
+26. docker system df 
+	-> look at all the things related to demon
+		images,columes,contaers etc
+
+27. Distributed Tracing (zipkin) for microservices
+	-> docker run -d -p 9411:9411 openzipkin/zipkin
+	-> http://localhost:9411
+	-> http://localhost:9411/zipkin/
+
+
+#####################################################
+
+Creating a docker image for you microservices
+1. Giving a name to your docker container
+	goto ->currency-exchange.pom file
+		goto -> spring-boot-maven-plugin
+			add image tag
+			
+			docker id -> rishabhsh5554
+			pullPolicy tag -> used if we pull the image it will first check locally then download
+			
+			Example---------------
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+					
+					<image>
+						<name>rishabhsh5554/microservice-${project.artifactId}:${project.version}</name>
+					</image>
+					<pullPolicy>IF_NOT_PRESENT</pullPolicy>
+				</configuration>
+			</plugin>
+
+2. run as maven build give	
+	goal = spring-boot:build-image -DskipTests
+		
+	
+docker.io/rishabhsh5554/microservice-currency-exchange-service:0.0.1-SNAPSHOTdockerdocker
+docker run -dp 8000:8000 rishabhsh5554/microservice-currency-exchange-service:0.0.1-SNAPSHOT
+
+
+====================Docker compose===========================
+Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application’s services. 
+
+1. docker-compose -version
+
+Using Compose is basically a three-step process:
+
+	1. Define your app’s environment with a Dockerfile so it can be reproduced anywhere.
+		E:\backup\Coding_and_Technical\Project_2022_Microservices\docker\docker-compose.yaml
+
+	2. Define the services that make up your app in docker-compose.yml so they can be run together in an isolated environment.
+
+	3. Run docker compose up and the Docker compose command starts and runs your entire app. You can alternatively run docker-compose up using Compose standalone(docker-compose binary).
+
+
+==============================================================
+
+Now create container for eureka naming server as like currency exchange container
+
+docker.io/rishabhsh5554/microservice-eureka-naming-server:0.0.1-SNAPSHOT
+
+2. docker compose up - to run all container in network via docker-compose.yaml file
+
+
+
+
+
+
+
