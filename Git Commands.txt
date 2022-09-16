@@ -11,3 +11,6 @@ Git commnads
 10. git remote add origin https://github.com/rishabhsharma5554/DSA-repo.git (to attach your project to repo) 
 11. git remote -v (gives all the URLs attach to your folder)
 12. git push origin master (share the changes to your URLs)
+13. git beanch branchName (create a new branch from the main)
+14. git checkout branchName (use your new branch)
+15. git merge branchName (merge current branch with branchName)
