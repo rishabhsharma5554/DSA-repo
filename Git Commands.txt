@@ -10,3 +10,4 @@ Git commnads
 9. git stash clear (to remove from waiting room)
 10. git remote add origin https://github.com/rishabhsharma5554/DSA-repo.git (to attach your project to repo) 
 11. git remote -v (gives all the URLs attach to your folder)
+12. git push origin master (share the changes to your URLs)
