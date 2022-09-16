@@ -1,0 +1,12 @@
+Git commnads
+
+1. git init
+2. git status
+3. git add .  (. = add all files to stagging)
+5. git stash (go to waiting room from stage)
+6. git stash pop (come here from waiting room)
+7. git commmit -m "Your message"
+8. git log
+9. git stash clear (to remove from waiting room)
+10. git remote add origin https://github.com/rishabhsharma5554/DSA-repo.git (to attach your project to repo) 
+11. git remote -v (gives all the URLs attach to your folder)
